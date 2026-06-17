@@ -2,7 +2,9 @@ export type TabId = 'heal' | 'rhythm' | 'outfit' | 'spark'
 
 export type EnergySource = 'heal' | 'rhythm' | 'outfit' | 'spark'
 
-export type PetType = 'golden' | 'teddy' | 'orangeCat' | 'ragdoll'
+export type PetType = 'teddy' | 'golden' | 'ragdoll'
+
+export type PetMood = 'normal' | 'happy' | 'sleepy'
 
 export type PetProfile = {
   type: PetType

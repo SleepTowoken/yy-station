@@ -5,6 +5,7 @@ import { useLocalStorage } from '../hooks/useLocalStorage'
 import type { PetProfile, PetType } from '../types/app'
 import { Button } from './Button'
 import { PillSelector } from './PillSelector'
+import { defaultPetType } from './pet/petPresets'
 
 type PetPanelProps = {
   beans: number
@@ -14,8 +15,12 @@ type PetPanelProps = {
 }
 
 const defaultProfile: PetProfile = {
-  type: 'golden',
+  type: defaultPetType,
   name: '小值班员',
+}
+
+function resolvePetType(type: string): PetType {
+  return type in petOptions ? (type as PetType) : defaultPetType
 }
 
 export function PetPanel({ beans, spendBean, onToast, onClose }: PetPanelProps) {
@@ -23,7 +28,8 @@ export function PetPanel({ beans, spendBean, onToast, onClose }: PetPanelProps) 
   const [items, setItems] = useLocalStorage<string[]>('station_pet_items', [])
   const [draftName, setDraftName] = useState(profile.name)
   const [lineIndex, setLineIndex] = useState(0)
-  const pet = petOptions[profile.type]
+  const petType = resolvePetType(profile.type)
+  const pet = petOptions[petType]
 
   const petLine = useMemo(() => pet.lines[lineIndex % pet.lines.length], [lineIndex, pet.lines])
 

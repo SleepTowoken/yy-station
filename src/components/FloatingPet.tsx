@@ -1,11 +1,13 @@
 import { lazy, Suspense, useEffect, useRef, useState, type CSSProperties, type KeyboardEvent, type PointerEvent } from 'react'
 import { petOptions } from '../constants/pets'
 import { useLocalStorage } from '../hooks/useLocalStorage'
-import type { PetProfile } from '../types/app'
+import type { PetMood, PetProfile, PetType } from '../types/app'
 import { PetPanel } from './PetPanel'
+import { defaultPetType } from './pet/petPresets'
 
 const PetCanvas = lazy(() => import('./pet/PetCanvas'))
 const DRAG_THRESHOLD = 6
+const PET_CARTOON_MIGRATION_KEY = 'station_pet_cartoon_migrated'
 
 type FloatingPetProps = {
   beans: number
@@ -52,26 +54,46 @@ function clampPosition(position: PetPosition) {
   }
 }
 
+function resolvePetType(type: string): PetType {
+  return type in petOptions ? (type as PetType) : defaultPetType
+}
+
+function getNextMood(mood: PetMood): PetMood {
+  if (mood === 'normal') {
+    return 'happy'
+  }
+
+  if (mood === 'happy') {
+    return 'sleepy'
+  }
+
+  return 'normal'
+}
+
 export function FloatingPet({ beans, spendBean, onToast }: FloatingPetProps) {
   const [open, setOpen] = useState(false)
   const [hovered, setHovered] = useState(false)
-  const [happy, setHappy] = useState(false)
+  const [mood, setMood] = useState<PetMood>('normal')
   const [position, setPosition] = useLocalStorage<PetPosition | null>('station_pet_float_position', null)
-  const [profile] = useLocalStorage<PetProfile>('station_pet_profile', {
-    type: 'golden',
+  const [profile, setProfile] = useLocalStorage<PetProfile>('station_pet_profile', {
+    type: defaultPetType,
     name: '小值班员',
   })
   const dragRef = useRef<DragState | null>(null)
-  const happyTimerRef = useRef<number | null>(null)
-  const pet = petOptions[profile.type]
+  const petType = resolvePetType(profile.type)
+  const pet = petOptions[petType]
 
   useEffect(() => {
-    return () => {
-      if (happyTimerRef.current) {
-        window.clearTimeout(happyTimerRef.current)
-      }
+    const migrated = window.localStorage.getItem(PET_CARTOON_MIGRATION_KEY)
+    if (migrated) {
+      return
     }
-  }, [])
+
+    if (profile.type === 'golden' && profile.name === '小值班员') {
+      setProfile({ ...profile, type: defaultPetType })
+    }
+    window.localStorage.setItem(PET_CARTOON_MIGRATION_KEY, 'true')
+  }, [profile, setProfile])
 
   useEffect(() => {
     if (!position) {
@@ -86,16 +108,8 @@ export function FloatingPet({ beans, spendBean, onToast }: FloatingPetProps) {
     return () => window.removeEventListener('resize', handleResize)
   }, [position, setPosition])
 
-  function triggerHappy() {
-    setHappy(true)
-    if (happyTimerRef.current) {
-      window.clearTimeout(happyTimerRef.current)
-    }
-    happyTimerRef.current = window.setTimeout(() => setHappy(false), 1600)
-  }
-
   function toggleOpen() {
-    triggerHappy()
+    setMood((current) => getNextMood(current))
     setOpen((current) => !current)
   }
 
@@ -180,7 +194,7 @@ export function FloatingPet({ beans, spendBean, onToast }: FloatingPetProps) {
       ) : null}
       {open ? <PetPanel beans={beans} spendBean={spendBean} onToast={onToast} onClose={() => setOpen(false)} /> : null}
       <button
-        className={`pet-button ${open ? 'is-open' : ''} ${hovered ? 'is-hovered' : ''} ${happy ? 'is-happy' : ''}`}
+        className={`pet-button ${open ? 'is-open' : ''} ${hovered ? 'is-hovered' : ''} is-${mood}`}
         style={positionStyle}
         type="button"
         aria-label={open ? '收起回血小窝' : '打开回血小窝'}
@@ -195,7 +209,7 @@ export function FloatingPet({ beans, spendBean, onToast }: FloatingPetProps) {
         onPointerCancel={handlePointerCancel}
       >
         <Suspense fallback={<span className="pet-button-loading">{pet.icon}</span>}>
-          <PetCanvas active={hovered || open} fallback={pet.icon} happy={happy} label={`${profile.name} · ${pet.label}`} />
+          <PetCanvas active={hovered || open} fallback={pet.icon} label={`${profile.name} · ${pet.label}`} mood={mood} type={petType} />
         </Suspense>
       </button>
     </>
