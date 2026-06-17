@@ -1,11 +1,11 @@
-import { lazy, Suspense, useEffect, useRef, useState, type CSSProperties, type KeyboardEvent, type PointerEvent } from 'react'
+import { useEffect, useRef, useState, type CSSProperties, type KeyboardEvent, type PointerEvent } from 'react'
 import { petOptions } from '../constants/pets'
 import { useLocalStorage } from '../hooks/useLocalStorage'
 import type { PetMood, PetProfile, PetType } from '../types/app'
 import { PetPanel } from './PetPanel'
+import { PetWidget } from './pet/PetWidget'
 import { defaultPetType } from './pet/petPresets'
 
-const PetCanvas = lazy(() => import('./pet/PetCanvas'))
 const DRAG_THRESHOLD = 6
 const PET_CARTOON_MIGRATION_KEY = 'station_pet_cartoon_migrated'
 
@@ -31,10 +31,10 @@ type DragState = {
 
 function getPetSize() {
   if (typeof window === 'undefined') {
-    return 188
+    return 144
   }
 
-  return window.matchMedia('(max-width: 640px)').matches ? 132 : 188
+  return window.matchMedia('(max-width: 640px)').matches ? 90 : 144
 }
 
 function clampPosition(position: PetPosition) {
@@ -208,9 +208,7 @@ export function FloatingPet({ beans, spendBean, onToast }: FloatingPetProps) {
         onPointerUp={handlePointerUp}
         onPointerCancel={handlePointerCancel}
       >
-        <Suspense fallback={<span className="pet-button-loading">{pet.icon}</span>}>
-          <PetCanvas active={hovered || open} fallback={pet.icon} label={`${profile.name} · ${pet.label}`} mood={mood} type={petType} />
-        </Suspense>
+        <PetWidget active={hovered || open} label={`${profile.name} · ${pet.label}`} mood={mood} type={petType} />
       </button>
     </>
   )
