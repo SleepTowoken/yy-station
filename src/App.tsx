@@ -2,12 +2,14 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { AdminDashboard } from './admin/AdminDashboard'
 import { AdminLayout } from './admin/AdminLayout'
 import { AdminMood } from './admin/AdminMood'
+import { AdminNotes } from './admin/AdminNotes'
 import { AdminOutfits } from './admin/AdminOutfits'
 import { AdminRhythm } from './admin/AdminRhythm'
 import { AdminSparks } from './admin/AdminSparks'
 import { AdminSupply } from './admin/AdminSupply'
 import { Gate } from './pages/Gate'
 import { Home } from './pages/Home'
+import { SupplyBox } from './pages/SupplyBox'
 import { ToastProvider } from './components/Toast'
 import { useLocalStorage } from './hooks/useLocalStorage'
 
@@ -19,6 +21,16 @@ function StationApp() {
   }
 
   return <Home />
+}
+
+function GatedSupplyBox() {
+  const [passedGate, setPassedGate] = useLocalStorage('station_passed_gate', false)
+
+  if (!passedGate) {
+    return <Gate onPassed={() => setPassedGate(true)} />
+  }
+
+  return <SupplyBox />
 }
 
 function App() {
@@ -33,7 +45,9 @@ function App() {
             <Route path="rhythm" element={<AdminRhythm />} />
             <Route path="outfits" element={<AdminOutfits />} />
             <Route path="sparks" element={<AdminSparks />} />
+            <Route path="notes" element={<AdminNotes />} />
           </Route>
+          <Route path="/supply-box" element={<GatedSupplyBox />} />
           <Route path="*" element={<StationApp />} />
         </Routes>
       </BrowserRouter>

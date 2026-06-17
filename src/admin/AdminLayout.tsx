@@ -13,10 +13,11 @@ const adminLinks = [
   { href: '/admin/rhythm', label: '自己的节奏', countKey: 'rhythm' },
   { href: '/admin/outfits', label: '今日穿搭', countKey: 'outfits' },
   { href: '/admin/sparks', label: '小火花儿', countKey: 'sparks' },
+  { href: '/admin/notes', label: '补给箱', countKey: null },
 ] satisfies Array<{
   href: string
   label: string
-  countKey: keyof AdminUnreadCounts
+  countKey: keyof AdminUnreadCounts | null
 }>
 
 const emptyCounts: AdminUnreadCounts = {
@@ -118,7 +119,7 @@ export function AdminLayout() {
       </header>
       <nav className="admin-nav" aria-label="后台导航">
         {adminLinks.map((link) => {
-          const count = unreadCounts[link.countKey]
+          const count = link.countKey ? unreadCounts[link.countKey] : 0
           return (
             <Link className={adminLinkClass(location.pathname === link.href, count)} to={link.href} key={link.href}>
               {link.label}
