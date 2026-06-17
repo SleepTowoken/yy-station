@@ -56,6 +56,7 @@ export function ParticlePet({ active, mood, particleCount, reducedMotion, type }
     if (auraMaterialRef.current) {
       auraMaterialRef.current.size = happy ? 0.056 : active ? 0.042 : sleepy ? 0.028 : 0.034
       auraMaterialRef.current.opacity = happy ? 0.92 : active ? 0.72 : sleepy ? 0.36 : 0.52
+      auraMaterialRef.current.color.set(happy ? preset.sparkle : preset.particle)
     }
   })
 

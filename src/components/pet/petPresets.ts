@@ -11,6 +11,8 @@ export type PetPreset = {
   main: string
   dark: string
   light: string
+  accent: string
+  line: string
   blush: string
   eye: string
 }
@@ -25,18 +27,22 @@ export const petPresets: Record<PetType, PetPreset> = {
     main: '#b98255',
     dark: '#7a4a2a',
     light: '#f1d0ad',
+    accent: '#d99b6b',
+    line: '#8d5a35',
     blush: '#f3a58b',
     eye: '#2e241e',
   },
   golden: {
     className: 'pet-golden',
-    particle: '#fff1c7',
-    sparkle: '#f2c46d',
-    glow: 'rgba(242, 196, 109, 0.5)',
-    shell: 'rgba(255, 225, 146, 0.44)',
-    main: '#f2c46d',
-    dark: '#c9872d',
-    light: '#fff1c7',
+    particle: '#ffe1a0',
+    sparkle: '#ffb84d',
+    glow: 'rgba(242, 176, 74, 0.5)',
+    shell: 'rgba(255, 218, 128, 0.44)',
+    main: '#edb452',
+    dark: '#b56f21',
+    light: '#ffe4a8',
+    accent: '#f3c46f',
+    line: '#9a611d',
     blush: '#f0a67e',
     eye: '#3f2b16',
   },
@@ -49,6 +55,8 @@ export const petPresets: Record<PetType, PetPreset> = {
     main: '#f7efe2',
     dark: '#b38a72',
     light: '#fff8ed',
+    accent: '#3f352f',
+    line: '#9a7b66',
     blush: '#e7b7ae',
     eye: '#78bfff',
   },

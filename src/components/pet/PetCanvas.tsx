@@ -53,7 +53,7 @@ export default function PetCanvas({ active, mood, label, fallback, type }: PetCa
           <ambientLight intensity={0.72} />
           <pointLight color={preset.sparkle} intensity={isHappy ? 2.2 : 1.35} position={[1.8, 2.2, 2.8]} />
           <pointLight color="#9ed8ff" intensity={active ? 1.8 : 1.1} position={[-2.2, -0.6, 2.2]} />
-          <ParticlePet active={active} mood={mood} particleCount={particleCount} reducedMotion={reducedMotion} type={type} />
+          <ParticlePet key={type} active={active} mood={mood} particleCount={particleCount} reducedMotion={reducedMotion} type={type} />
         </Suspense>
       </Canvas>
       <CartoonPet active={active} mood={mood} type={type} />
