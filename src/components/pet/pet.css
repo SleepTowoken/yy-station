@@ -8,63 +8,557 @@
   transform-style: preserve-3d;
 }
 
-.pet-image-wrap {
+.plush-pet {
   position: relative;
   display: grid;
   place-items: center;
   width: 100%;
   height: 100%;
-  animation: petFloat 5.6s ease-in-out infinite;
+  animation: plushFloat 5.8s ease-in-out infinite;
   pointer-events: none;
-  transform-origin: 50% 82%;
+  transform-origin: 50% 84%;
 }
 
 .pet-image {
   position: relative;
-  z-index: 2;
+  z-index: 4;
   display: block;
   width: min(100%, 144px);
   height: min(100%, 144px);
   object-fit: contain;
   user-select: none;
   pointer-events: none;
-  transform: translateZ(0);
-  animation: petBreath 3.9s ease-in-out infinite;
+  animation: plushBreath 4s ease-in-out infinite;
   filter:
     drop-shadow(0 16px 18px var(--pet-shadow))
-    drop-shadow(0 3px 4px rgba(255, 255, 255, 0.35));
+    drop-shadow(0 2px 4px rgba(255, 255, 255, 0.32));
+}
+
+.plush-pet.is-fallback .pet-image {
+  display: none;
 }
 
 .pet-ground-shadow {
   position: absolute;
   left: 50%;
-  bottom: 10px;
+  bottom: 9px;
   z-index: 1;
-  width: 58%;
-  height: 16%;
+  width: 60%;
+  height: 15%;
   border-radius: 50%;
   background: radial-gradient(ellipse at center, var(--pet-shadow), transparent 68%);
-  opacity: 0.78;
+  opacity: 0.76;
   transform: translateX(-50%) rotateX(62deg);
   filter: blur(3px);
-  pointer-events: none;
 }
 
-.pet-widget.is-active .pet-image-wrap {
-  animation-duration: 4.8s;
-  transform: translateY(-2px) scale(1.025);
-}
-
-.pet-widget.is-active .pet-image {
+.plush-fallback {
+  position: relative;
+  z-index: 3;
+  width: 132px;
+  height: 140px;
+  animation: plushBreath 4s ease-in-out infinite;
   filter:
-    drop-shadow(0 20px 22px var(--pet-shadow))
-    drop-shadow(0 4px 5px rgba(255, 255, 255, 0.42));
+    drop-shadow(0 15px 16px var(--pet-shadow))
+    drop-shadow(0 2px 3px rgba(255, 255, 255, 0.36));
 }
 
-.pet-widget.is-happy .pet-image-wrap {
+.plush-body {
+  position: absolute;
+  left: 50%;
+  top: 82px;
+  width: 76px;
+  height: 56px;
+  transform: translateX(-50%);
+  border-radius: 46% 46% 35% 35% / 60% 60% 40% 40%;
+  background:
+    radial-gradient(circle at 36% 18%, rgba(255, 255, 255, 0.36), transparent 18%),
+    radial-gradient(circle at 62% 78%, rgba(255, 255, 255, 0.16), transparent 24%),
+    linear-gradient(150deg, var(--pet-light), var(--pet-main) 58%, var(--pet-dark) 140%);
+  box-shadow:
+    inset 8px 8px 16px rgba(255, 255, 255, 0.2),
+    inset -8px -9px 16px rgba(83, 47, 22, 0.16);
+}
+
+.plush-chest {
+  position: absolute;
+  left: 50%;
+  top: 11px;
+  width: 38px;
+  height: 35px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 38% 28%, rgba(255, 255, 255, 0.55), transparent 22%),
+    color-mix(in srgb, var(--pet-light) 78%, white);
+  opacity: 0.74;
+}
+
+.plush-arm {
+  position: absolute;
+  top: 21px;
+  width: 18px;
+  height: 32px;
+  border-radius: 999px;
+  background: linear-gradient(155deg, var(--pet-light), var(--pet-main) 68%);
+  box-shadow: inset -3px -4px 7px rgba(86, 49, 24, 0.12);
+}
+
+.plush-arm-left {
+  left: 4px;
+  transform: rotate(11deg);
+}
+
+.plush-arm-right {
+  right: 4px;
+  transform: rotate(-11deg);
+}
+
+.plush-paw {
+  position: absolute;
+  bottom: -4px;
+  width: 23px;
+  height: 17px;
+  border-radius: 48% 52% 56% 44%;
+  background:
+    radial-gradient(circle at 42% 66%, color-mix(in srgb, var(--pet-dark) 34%, transparent) 0 6%, transparent 7%),
+    linear-gradient(145deg, color-mix(in srgb, var(--pet-light) 88%, white), var(--pet-light));
+  box-shadow: inset -3px -4px 7px rgba(86, 49, 24, 0.12);
+}
+
+.plush-paw-left {
+  left: 13px;
+  transform: rotate(8deg);
+}
+
+.plush-paw-right {
+  right: 13px;
+  transform: rotate(-8deg);
+}
+
+.plush-tail {
+  position: absolute;
+  left: 12px;
+  top: 103px;
+  z-index: 2;
+  width: 38px;
+  height: 18px;
+  border-radius: 999px 16px 999px 999px;
+  background: linear-gradient(145deg, var(--pet-light), var(--pet-main));
+  transform: rotate(-18deg);
+  transform-origin: right center;
+  opacity: 0;
+  box-shadow: inset -4px -5px 8px rgba(86, 49, 24, 0.14);
+}
+
+.plush-head {
+  position: absolute;
+  left: 50%;
+  top: 17px;
+  width: 98px;
+  height: 87px;
+  transform: translateX(-50%);
+  border-radius: 48% 48% 43% 43% / 52% 52% 46% 46%;
+  background:
+    radial-gradient(circle at 38% 25%, rgba(255, 255, 255, 0.36), transparent 15%),
+    radial-gradient(circle at 70% 72%, rgba(255, 255, 255, 0.18), transparent 25%),
+    linear-gradient(145deg, var(--pet-light) 0%, var(--pet-main) 46%, var(--pet-dark) 136%);
+  box-shadow:
+    inset 9px 8px 18px rgba(255, 255, 255, 0.22),
+    inset -9px -10px 18px rgba(83, 47, 22, 0.17);
+}
+
+.plush-fur {
+  position: absolute;
+  z-index: 5;
+  background: var(--pet-light);
+  filter: blur(0.12px);
+  opacity: 0.82;
+}
+
+.plush-fur-top {
+  left: 18px;
+  top: -11px;
+  width: 62px;
+  height: 28px;
+  border-radius: 46% 54% 45% 55%;
+  background:
+    radial-gradient(circle at 14% 62%, var(--pet-light) 0 16%, transparent 17%),
+    radial-gradient(circle at 34% 36%, color-mix(in srgb, var(--pet-light) 78%, white) 0 20%, transparent 21%),
+    radial-gradient(circle at 58% 34%, var(--pet-main) 0 20%, transparent 21%),
+    radial-gradient(circle at 82% 60%, var(--pet-light) 0 18%, transparent 19%);
+}
+
+.plush-ear {
+  position: absolute;
+  z-index: -1;
+  top: 13px;
+  width: 40px;
+  height: 66px;
+  background:
+    radial-gradient(circle at 44% 24%, rgba(255, 255, 255, 0.22), transparent 26%),
+    radial-gradient(circle at 54% 74%, rgba(255, 255, 255, 0.12), transparent 30%),
+    linear-gradient(145deg, var(--pet-main), var(--pet-dark));
+  box-shadow:
+    inset -5px -7px 12px rgba(77, 42, 22, 0.18),
+    0 4px 8px rgba(122, 74, 42, 0.08);
+}
+
+.plush-ear::after {
+  position: absolute;
+  inset: 12px 9px 11px;
+  border-radius: inherit;
+  background: color-mix(in srgb, var(--pet-accent) 56%, var(--pet-light));
+  opacity: 0.42;
+  content: "";
+}
+
+.plush-ear-left {
+  left: -22px;
+  border-radius: 48% 44% 56% 46%;
+  transform-origin: 78% 24%;
+  transform: rotate(-10deg);
+  animation: teddyEarLeft 5.8s ease-in-out infinite;
+}
+
+.plush-ear-right {
+  right: -22px;
+  border-radius: 44% 48% 46% 56%;
+  transform-origin: 22% 24%;
+  transform: rotate(10deg);
+  animation: teddyEarRight 5.8s ease-in-out infinite;
+}
+
+.plush-face {
+  position: absolute;
+  left: 50%;
+  bottom: 9px;
+  z-index: 1;
+  width: 66px;
+  height: 47px;
+  transform: translateX(-50%);
+  border-radius: 50% 50% 45% 45%;
+  background:
+    radial-gradient(circle at 30% 42%, color-mix(in srgb, var(--pet-light) 84%, white) 0 32%, transparent 33%),
+    radial-gradient(circle at 70% 42%, color-mix(in srgb, var(--pet-light) 84%, white) 0 32%, transparent 33%),
+    linear-gradient(180deg, color-mix(in srgb, var(--pet-light) 88%, white), color-mix(in srgb, var(--pet-light) 64%, var(--pet-main)));
+  opacity: 0.8;
+}
+
+.plush-eye {
+  position: absolute;
+  top: 38px;
+  z-index: 4;
+  width: 10px;
+  height: 14px;
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at 62% 23%, rgba(255, 255, 255, 0.96) 0 13%, transparent 14%),
+    radial-gradient(circle at 40% 78%, rgba(255, 255, 255, 0.2) 0 10%, transparent 11%),
+    var(--pet-eye);
+  transform-origin: 50% 50%;
+  animation: plushBlink 5.6s ease-in-out infinite;
+}
+
+.plush-eye-left {
+  left: 29px;
+}
+
+.plush-eye-right {
+  right: 29px;
+}
+
+.pet-widget.is-happy .plush-eye {
+  height: 8px;
+  border-radius: 999px 999px 4px 4px;
+  background: transparent;
+  border-top: 3px solid var(--pet-eye);
+  animation: none;
+}
+
+.pet-widget.is-sleepy .plush-eye {
+  height: 5px;
+  opacity: 0.76;
+  transform: scaleY(0.42);
+  animation: none;
+}
+
+.plush-blush {
+  position: absolute;
+  top: 56px;
+  z-index: 4;
+  width: 17px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--pet-blush);
+  opacity: 0.6;
+  filter: blur(0.4px);
+}
+
+.plush-blush-left {
+  left: 16px;
+}
+
+.plush-blush-right {
+  right: 16px;
+}
+
+.plush-muzzle {
+  position: absolute;
+  left: 50%;
+  bottom: 11px;
+  z-index: 5;
+  width: 38px;
+  height: 29px;
+  transform: translateX(-50%);
+  border-radius: 48% 48% 52% 52%;
+  background:
+    radial-gradient(circle at 34% 48%, rgba(255, 255, 255, 0.3), transparent 24%),
+    color-mix(in srgb, var(--pet-light) 78%, white);
+  box-shadow: inset -2px -3px 5px rgba(122, 74, 42, 0.08);
+}
+
+.plush-nose {
+  position: absolute;
+  left: 50%;
+  top: 3px;
+  width: 15px;
+  height: 11px;
+  transform: translateX(-50%);
+  border-radius: 50% 50% 58% 58%;
+  background:
+    radial-gradient(circle at 64% 24%, rgba(255, 255, 255, 0.55) 0 15%, transparent 16%),
+    linear-gradient(145deg, #2f2b28, #0f1110);
+  box-shadow: inset 0 -2px 3px rgba(255, 255, 255, 0.18);
+}
+
+.plush-mouth {
+  position: absolute;
+  left: 50%;
+  top: 14px;
+  width: 18px;
+  height: 10px;
+  transform: translateX(-50%);
+  border-bottom: 2px solid color-mix(in srgb, var(--pet-eye) 78%, transparent);
+  border-radius: 0 0 999px 999px;
+}
+
+.plush-tongue {
+  position: absolute;
+  left: 50%;
+  top: 21px;
+  width: 12px;
+  height: 8px;
+  transform: translateX(-50%) scaleY(0);
+  transform-origin: top center;
+  border-radius: 4px 4px 999px 999px;
+  background: linear-gradient(180deg, #ff9aa5, #e96f80);
+  opacity: 0;
+}
+
+.pet-widget.is-happy .plush-tongue {
+  opacity: 1;
+  transform: translateX(-50%) scaleY(1);
+}
+
+.plush-hood {
+  display: none;
+}
+
+.plush-pet--golden .plush-head {
+  top: 12px;
+  width: 91px;
+  height: 91px;
+  border-radius: 50% 50% 43% 43% / 54% 54% 42% 42%;
+  background:
+    radial-gradient(circle at 42% 22%, rgba(255, 255, 255, 0.36), transparent 15%),
+    radial-gradient(circle at 50% 72%, rgba(255, 241, 199, 0.48), transparent 34%),
+    linear-gradient(145deg, var(--pet-light), var(--pet-main) 58%, var(--pet-dark) 138%);
+}
+
+.plush-pet--golden .plush-ear {
+  top: 18px;
+  width: 31px;
+  height: 62px;
+  border-radius: 44% 48% 56% 56%;
+}
+
+.plush-pet--golden .plush-ear-left {
+  left: -13px;
+  transform: rotate(7deg);
+  animation-name: goldenEarLeft;
+}
+
+.plush-pet--golden .plush-ear-right {
+  right: -13px;
+  transform: rotate(-7deg);
+  animation-name: goldenEarRight;
+}
+
+.plush-pet--golden .plush-body {
+  top: 83px;
+  width: 82px;
+  height: 61px;
+}
+
+.plush-pet--golden .plush-mouth {
+  top: 12px;
+  width: 22px;
+  height: 18px;
+  border-bottom: 0;
+  border-radius: 0 0 999px 999px;
+  background: #2f2520;
+}
+
+.plush-pet--golden .plush-tongue {
+  top: 18px;
+  width: 14px;
+  height: 13px;
+  opacity: 1;
+  transform: translateX(-50%) scaleY(1);
+}
+
+.plush-pet--golden .plush-tail {
+  opacity: 0.82;
+  animation: tailWag 2.5s ease-in-out infinite;
+}
+
+.plush-pet--ragdoll .plush-body {
+  top: 82px;
+  width: 78px;
+  height: 61px;
+  background:
+    radial-gradient(circle at 50% 22%, var(--pet-light) 0 24%, transparent 25%),
+    radial-gradient(circle at 26% 56%, var(--pet-dark) 0 31%, transparent 32%),
+    radial-gradient(circle at 75% 56%, var(--pet-dark) 0 31%, transparent 32%),
+    linear-gradient(145deg, var(--pet-light), #f0e4d6);
+}
+
+.plush-pet--ragdoll .plush-arm {
+  background: var(--pet-dark);
+}
+
+.plush-pet--ragdoll .plush-paw {
+  background:
+    radial-gradient(circle at 50% 52%, #f1c5b2 0 30%, transparent 31%),
+    var(--pet-light);
+}
+
+.plush-pet--ragdoll .plush-head {
+  top: 11px;
+  width: 94px;
+  height: 87px;
+  border-radius: 24px 24px 36px 36px;
+  background: transparent;
+  box-shadow: none;
+}
+
+.plush-pet--ragdoll .plush-ear,
+.plush-pet--ragdoll .plush-face,
+.plush-pet--ragdoll .plush-muzzle,
+.plush-pet--ragdoll .plush-blush,
+.plush-pet--ragdoll .plush-fur {
+  display: none;
+}
+
+.plush-pet--ragdoll .plush-hood {
+  position: absolute;
+  inset: 0 2px 8px;
+  z-index: 3;
+  display: block;
+  border-radius: 20px 18px 32px 30px;
+  background:
+    radial-gradient(circle at 30% 40%, rgba(255, 255, 255, 0.58), transparent 18%),
+    linear-gradient(155deg, #fff8df, #e8dcc2 72%, #d8c9aa);
+  box-shadow:
+    inset 6px 7px 12px rgba(255, 255, 255, 0.42),
+    inset -7px -8px 12px rgba(128, 104, 72, 0.12),
+    0 3px 7px rgba(105, 82, 56, 0.12);
+  transform: rotate(-7deg);
+}
+
+.plush-hood-ear {
+  position: absolute;
+  top: -12px;
+  width: 32px;
+  height: 34px;
+  background: #efe3c9;
+  box-shadow: inset -4px -5px 8px rgba(128, 104, 72, 0.12);
+}
+
+.plush-hood-ear-left {
+  left: 6px;
+  border-radius: 8px 90% 8px 70%;
+  transform: rotate(-29deg);
+}
+
+.plush-hood-ear-right {
+  right: 9px;
+  border-radius: 90% 8px 70% 8px;
+  transform: rotate(25deg);
+}
+
+.plush-hood-hole {
+  position: absolute;
+  top: 35px;
+  z-index: 4;
+  width: 17px;
+  height: 15px;
+  border-radius: 46% 54% 52% 48%;
+  background:
+    radial-gradient(circle at 52% 55%, var(--pet-eye) 0 16%, transparent 17%),
+    var(--pet-dark);
+  box-shadow: inset 2px 2px 3px rgba(0, 0, 0, 0.24);
+}
+
+.plush-hood-hole-left {
+  left: 25px;
+  transform: rotate(9deg);
+}
+
+.plush-hood-hole-right {
+  right: 24px;
+  transform: rotate(-8deg);
+}
+
+.plush-pet--ragdoll .plush-eye {
+  top: 47px;
+  z-index: 5;
+  width: 7px;
+  height: 8px;
+  background: #7bc7ff;
+  opacity: 0.86;
+}
+
+.plush-pet--ragdoll .plush-eye-left {
+  left: 32px;
+}
+
+.plush-pet--ragdoll .plush-eye-right {
+  right: 31px;
+}
+
+.plush-pet--ragdoll .plush-tail {
+  left: 8px;
+  top: 106px;
+  width: 46px;
+  background: var(--pet-dark);
+  opacity: 0.82;
+}
+
+.pet-widget.is-active .plush-pet {
+  animation-duration: 4.9s;
+}
+
+.pet-widget.is-active .plush-fallback,
+.pet-widget.is-active .pet-image {
+  scale: 1.025;
+}
+
+.pet-widget.is-happy .plush-pet {
   animation:
-    petFloat 4.7s ease-in-out infinite,
-    petHappy 620ms ease-out 1;
+    plushFloat 4.7s ease-in-out infinite,
+    plushHappy 640ms ease-out 1;
 }
 
 .pet-widget.is-happy .pet-ground-shadow {
@@ -72,75 +566,13 @@
   scale: 1.08;
 }
 
-.pet-widget.is-sleepy .pet-image-wrap {
+.pet-widget.is-sleepy .plush-pet {
   animation-duration: 7.4s;
-  transform: translateY(4px) scale(0.985);
   opacity: 0.9;
+  transform: translateY(4px) scale(0.985);
 }
 
-.pet-widget.is-sleepy .pet-image {
-  animation-duration: 5.8s;
-  filter:
-    drop-shadow(0 12px 14px var(--pet-shadow))
-    drop-shadow(0 2px 3px rgba(255, 255, 255, 0.32));
-}
-
-.pet-image--teddy .pet-image {
-  scale: 1.02;
-}
-
-.pet-image--golden .pet-image {
-  scale: 1.04;
-}
-
-.pet-image--ragdoll .pet-image {
-  scale: 1;
-}
-
-.pet-image-fallback {
-  position: relative;
-  z-index: 2;
-  display: grid;
-  place-items: center;
-  width: 96px;
-  height: 96px;
-  border: 1px solid rgba(255, 255, 255, 0.72);
-  border-radius: 34px;
-  background:
-    radial-gradient(circle at 36% 28%, rgba(255, 255, 255, 0.7), transparent 26%),
-    linear-gradient(145deg, rgba(255, 241, 184, 0.9), rgba(221, 240, 255, 0.82));
-  box-shadow: 0 16px 22px var(--pet-shadow);
-  color: rgba(63, 58, 50, 0.72);
-  font-size: 22px;
-  font-weight: 800;
-  letter-spacing: 0;
-}
-
-.pet-image-fallback::before,
-.pet-image-fallback::after {
-  position: absolute;
-  top: 27px;
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  background: rgba(63, 58, 50, 0.2);
-  content: "";
-}
-
-.pet-image-fallback::before {
-  left: 28px;
-}
-
-.pet-image-fallback::after {
-  right: 28px;
-}
-
-.pet-image-fallback span {
-  position: relative;
-  top: 12px;
-}
-
-@keyframes petFloat {
+@keyframes plushFloat {
   0%,
   100% {
     transform: translate3d(0, 0, 0) scale(1);
@@ -150,7 +582,7 @@
   }
 }
 
-@keyframes petBreath {
+@keyframes plushBreath {
   0%,
   100% {
     transform: scale(1);
@@ -160,7 +592,7 @@
   }
 }
 
-@keyframes petHappy {
+@keyframes plushHappy {
   0% {
     transform: translate3d(0, 0, 0) scale(1) rotate(0);
   }
@@ -175,44 +607,92 @@
   }
 }
 
+@keyframes plushBlink {
+  0%,
+  88%,
+  100% {
+    transform: scaleY(1);
+  }
+  91%,
+  94% {
+    transform: scaleY(0.12);
+  }
+}
+
+@keyframes teddyEarLeft {
+  0%,
+  100% {
+    transform: rotate(-10deg);
+  }
+  50% {
+    transform: rotate(-15deg) translateY(1px);
+  }
+}
+
+@keyframes teddyEarRight {
+  0%,
+  100% {
+    transform: rotate(10deg);
+  }
+  50% {
+    transform: rotate(15deg) translateY(1px);
+  }
+}
+
+@keyframes goldenEarLeft {
+  0%,
+  100% {
+    transform: rotate(7deg);
+  }
+  50% {
+    transform: rotate(2deg) translateY(2px);
+  }
+}
+
+@keyframes goldenEarRight {
+  0%,
+  100% {
+    transform: rotate(-7deg);
+  }
+  50% {
+    transform: rotate(-2deg) translateY(2px);
+  }
+}
+
+@keyframes tailWag {
+  0%,
+  100% {
+    transform: rotate(-18deg);
+  }
+  50% {
+    transform: rotate(-31deg) translateY(-1px);
+  }
+}
+
 @media (max-width: 640px) {
   .pet-image {
     width: min(100%, 90px);
     height: min(100%, 90px);
   }
 
+  .plush-fallback {
+    width: 94px;
+    height: 100px;
+    scale: 0.72;
+  }
+
   .pet-ground-shadow {
     bottom: 7px;
     height: 15%;
   }
-
-  .pet-image-fallback {
-    width: 68px;
-    height: 68px;
-    border-radius: 24px;
-    font-size: 18px;
-  }
-
-  .pet-image-fallback::before,
-  .pet-image-fallback::after {
-    top: 19px;
-    width: 11px;
-    height: 11px;
-  }
-
-  .pet-image-fallback::before {
-    left: 20px;
-  }
-
-  .pet-image-fallback::after {
-    right: 20px;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .pet-image-wrap,
+  .plush-pet,
+  .plush-fallback,
   .pet-image,
-  .pet-widget.is-happy .pet-image-wrap {
+  .plush-ear,
+  .pet-widget.is-happy .plush-pet {
     animation: none;
   }
 }
