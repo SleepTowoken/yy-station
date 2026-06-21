@@ -21,8 +21,8 @@ export type PetPreset = {
 export const petPresets: Record<PetType, PetPreset> = {
   teddy: {
     label: '泰迪',
-    src: `${basePath}pets/teddy.webp`,
-    reference: `${basePath}pets/teddy.webp`,
+    src: `${basePath}pets/teddy-plush-v2.webp`,
+    reference: `${basePath}pets/teddy-plush-v2.webp`,
     className: 'plush-pet--teddy',
     shadowColor: 'rgba(153, 96, 48, 0.28)',
     main: '#b8794b',
@@ -34,8 +34,8 @@ export const petPresets: Record<PetType, PetPreset> = {
   },
   golden: {
     label: '金毛',
-    src: `${basePath}pets/golden.webp`,
-    reference: `${basePath}pets/golden.webp`,
+    src: `${basePath}pets/golden-plush-v2.webp`,
+    reference: `${basePath}pets/golden-plush-v2.webp`,
     className: 'plush-pet--golden',
     shadowColor: 'rgba(214, 150, 46, 0.25)',
     main: '#efc46b',
@@ -46,9 +46,9 @@ export const petPresets: Record<PetType, PetPreset> = {
     eye: '#201916',
   },
   ragdoll: {
-    label: '布偶',
-    src: `${basePath}pets/ragdoll.webp`,
-    reference: `${basePath}pets/ragdoll.webp`,
+    label: '没有猫',
+    src: `${basePath}pets/ragdoll-plush-v2.webp`,
+    reference: `${basePath}pets/ragdoll-plush-v2.webp`,
     className: 'plush-pet--ragdoll',
     shadowColor: 'rgba(108, 91, 78, 0.22)',
     main: '#f7efe2',

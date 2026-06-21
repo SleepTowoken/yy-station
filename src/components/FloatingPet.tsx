@@ -31,10 +31,22 @@ type DragState = {
 
 function getPetSize() {
   if (typeof window === 'undefined') {
-    return 144
+    return 150
   }
 
-  return window.matchMedia('(max-width: 640px)').matches ? 90 : 144
+  return window.matchMedia('(max-width: 640px)').matches ? 104 : 150
+}
+
+function getPositionBounds() {
+  const size = getPetSize()
+  const edge = 8
+  const bottomReserve = 86
+
+  return {
+    edge,
+    maxX: Math.max(edge, window.innerWidth - size - edge),
+    maxY: Math.max(edge, window.innerHeight - size - bottomReserve),
+  }
 }
 
 function clampPosition(position: PetPosition) {
@@ -42,11 +54,7 @@ function clampPosition(position: PetPosition) {
     return position
   }
 
-  const size = getPetSize()
-  const edge = 8
-  const bottomReserve = 86
-  const maxX = Math.max(edge, window.innerWidth - size - edge)
-  const maxY = Math.max(edge, window.innerHeight - size - bottomReserve)
+  const { edge, maxX, maxY } = getPositionBounds()
 
   return {
     x: Math.min(Math.max(position.x, edge), maxX),
@@ -73,6 +81,7 @@ function getNextMood(mood: PetMood): PetMood {
 export function FloatingPet({ beans, spendBean, onToast }: FloatingPetProps) {
   const [open, setOpen] = useState(false)
   const [hovered, setHovered] = useState(false)
+  const [dragging, setDragging] = useState(false)
   const [mood, setMood] = useState<PetMood>('normal')
   const [position, setPosition] = useLocalStorage<PetPosition | null>('station_pet_float_position', null)
   const [profile, setProfile] = useLocalStorage<PetProfile>('station_pet_profile', {
@@ -142,6 +151,7 @@ export function FloatingPet({ beans, spendBean, onToast }: FloatingPetProps) {
 
     if (distance > DRAG_THRESHOLD) {
       drag.moved = true
+      setDragging(true)
       setPosition(clampPosition({ x: drag.originX + deltaX, y: drag.originY + deltaY }))
     }
   }
@@ -155,7 +165,15 @@ export function FloatingPet({ beans, spendBean, onToast }: FloatingPetProps) {
     event.currentTarget.releasePointerCapture(event.pointerId)
     dragRef.current = null
 
-    if (!drag.moved) {
+    if (drag.moved) {
+      setPosition(
+        clampPosition({
+          x: drag.originX + event.clientX - drag.startX,
+          y: drag.originY + event.clientY - drag.startY,
+        }),
+      )
+      setDragging(false)
+    } else {
       toggleOpen()
     }
   }
@@ -167,6 +185,7 @@ export function FloatingPet({ beans, spendBean, onToast }: FloatingPetProps) {
     }
 
     dragRef.current = null
+    setDragging(false)
   }
 
   function handleKeyDown(event: KeyboardEvent<HTMLButtonElement>) {
@@ -194,7 +213,7 @@ export function FloatingPet({ beans, spendBean, onToast }: FloatingPetProps) {
       ) : null}
       {open ? <PetPanel beans={beans} spendBean={spendBean} onToast={onToast} onClose={() => setOpen(false)} /> : null}
       <button
-        className={`pet-button ${open ? 'is-open' : ''} ${hovered ? 'is-hovered' : ''} is-${mood}`}
+        className={`pet-button ${open ? 'is-open' : ''} ${hovered ? 'is-hovered' : ''} ${dragging ? 'is-dragging' : ''} is-${mood}`}
         style={positionStyle}
         type="button"
         aria-label={open ? '收起回血小窝' : '打开回血小窝'}

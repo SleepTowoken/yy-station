@@ -404,13 +404,13 @@ textarea.field {
 
 .pet-button {
   position: fixed;
-  right: max(16px, calc((100vw - 480px) / 2 + 16px));
+  right: max(12px, env(safe-area-inset-right));
   bottom: calc(84px + env(safe-area-inset-bottom));
   z-index: 32;
   display: grid;
   place-items: center;
-  width: 144px;
-  height: 144px;
+  width: 150px;
+  height: 150px;
   border-radius: 34px;
   background: transparent;
   box-shadow: none;
@@ -442,6 +442,12 @@ textarea.field {
 
 .pet-button:active {
   cursor: grabbing;
+}
+
+.pet-button.is-dragging {
+  cursor: grabbing;
+  transform: scale(1.035);
+  filter: saturate(1.08) drop-shadow(0 12px 16px rgba(89, 69, 45, 0.14));
 }
 
 .pet-button-loading {
@@ -998,8 +1004,8 @@ textarea.field {
   .pet-button {
     right: 8px;
     bottom: calc(82px + env(safe-area-inset-bottom));
-    width: 90px;
-    height: 90px;
+    width: 104px;
+    height: 104px;
     border-radius: 24px;
   }
 

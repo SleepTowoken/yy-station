@@ -23,8 +23,8 @@
   position: relative;
   z-index: 4;
   display: block;
-  width: min(100%, 144px);
-  height: min(100%, 144px);
+  width: min(100%, 150px);
+  height: min(100%, 150px);
   object-fit: contain;
   user-select: none;
   pointer-events: none;
@@ -671,8 +671,8 @@
 
 @media (max-width: 640px) {
   .pet-image {
-    width: min(100%, 90px);
-    height: min(100%, 90px);
+    width: min(100%, 104px);
+    height: min(100%, 104px);
   }
 
   .plush-fallback {

@@ -20,12 +20,12 @@ export const petOptions: Record<PetType, { label: string; icon: string; lines: s
     ],
   },
   ragdoll: {
-    label: '小布偶猫',
+    label: '没有猫',
     icon: '🐈',
     lines: [
-      '小布偶轻轻靠过来，今天也不用急。',
+      '没有猫抱着小爪爪，今天也不用急。',
       '它安静地待在旁边，陪你把心放慢一点。',
-      '小布偶表示：先照顾好自己。',
+      '没有猫从布帽里看了看你：先照顾好自己。',
     ],
   },
 }

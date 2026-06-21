@@ -40,8 +40,12 @@ function hasTransparentEdges(image: HTMLImageElement) {
 }
 
 export function PlushPet({ mood, type, label }: PlushPetProps) {
-  const [mode, setMode] = useState<'checking' | 'image' | 'fallback'>('checking')
+  const [imageState, setImageState] = useState<{
+    src: string
+    mode: 'image' | 'fallback'
+  } | null>(null)
   const preset = petPresets[type] ?? petPresets.teddy
+  const mode = imageState?.src === preset.src ? imageState.mode : 'checking'
   const style =
     {
       '--pet-shadow': preset.shadowColor,
@@ -54,7 +58,10 @@ export function PlushPet({ mood, type, label }: PlushPetProps) {
     } as CSSProperties
 
   function handleLoad(event: SyntheticEvent<HTMLImageElement>) {
-    setMode(hasTransparentEdges(event.currentTarget) ? 'image' : 'fallback')
+    setImageState({
+      src: preset.src,
+      mode: hasTransparentEdges(event.currentTarget) ? 'image' : 'fallback',
+    })
   }
 
   return (
@@ -66,7 +73,7 @@ export function PlushPet({ mood, type, label }: PlushPetProps) {
           src={preset.src}
           alt={`${label}宠物贴图`}
           draggable={false}
-          onError={() => setMode('fallback')}
+          onError={() => setImageState({ src: preset.src, mode: 'fallback' })}
           onLoad={handleLoad}
         />
       ) : null}
